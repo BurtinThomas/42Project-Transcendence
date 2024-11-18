@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+#app {
+    padding-top: 80px;
+    flex-grow: 1;
+    height: 100vh;
+}
+
+.content {
+    padding: 20px;
+}
+
+footer a {
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+footer a:hover {
+    color: rgba(255, 255, 255, 0.85);
+}

@@ -15,7 +15,27 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from AppAuthentification.views import register, changePassword, infosUser, deleteUser, login, logout, enable2FA, confirm2FA, login2FA, is2FAactivate, isUserAuthentified, disable2FA
+from AppGame.views import manageMatch, disconnectPlayer, matchsDetails
+from AppAuthentification.views import (
+    register,
+    changePassword,
+    infosUser,
+    deleteUser,
+    login,
+    logout,
+    enable2FA,
+    confirm2FA,
+    isUserAuthentified,
+    disable2FA,
+    addFriend,
+    listFriends,
+    removeFriend,
+    addAvatar,
+    getAvatar,
+    loginWith42,
+    callBack42,
+)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,10 +47,22 @@ urlpatterns = [
     #2FA
     path('api/enable2FA/', enable2FA),
     path('api/confirm2FA/', confirm2FA),
-    path('api/login2FA/', login2FA),
-    path('api/is2FAactivate/', is2FAactivate),
     path('api/disable2FA/', disable2FA),
     #settings
     path('api/infosUser/', infosUser),
     path('api/changePassword/', changePassword),
+    #Friends
+    path('api/addFriend/', addFriend),
+    path('api/listFriends/', listFriends),
+    path('api/removeFriend/', removeFriend),
+    #avatar
+    path('api/addAvatar/', addAvatar),
+    path('api/getAvatar/', getAvatar),
+    #api42
+    path('api/loginWith42/', loginWith42),
+    path('api/callBack42/', callBack42),
+    #Match
+    path('api/manageMatch/', manageMatch),
+    path('api/disconnectPlayer/', disconnectPlayer),
+    path('api/matchsDetails/', matchsDetails),
 ]

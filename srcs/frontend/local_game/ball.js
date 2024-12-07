@@ -1,4 +1,5 @@
-export class Ball {
+export class Ball 
+{
     constructor(x, y, radius, speedX, speedY, speedIncrement = 0.5) {
         this.x = x;
         this.y = y;
@@ -10,17 +11,25 @@ export class Ball {
         this.beginSpeedX = speedX; // Used for resetting the ball
         this.beginSpeedY = speedY; // Used for resetting the ball
         this.speedIncrement = speedIncrement; // Amount to increase speed after each paddle hit
+        this.lastPaddletouch = "left";
     }
 
-    draw(ctx) {
+    draw(ctx) 
+    {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "#0095DD";
+        ctx.fillStyle = "#00FF00";
         ctx.fill();
         ctx.closePath();
     }
 
-    update(canvas, leftPaddle, rightPaddle) {
+    getLastPaddleTouch()
+    {
+        return this.lastPaddletouch;
+    }
+
+    update(canvas, leftPaddle, rightPaddle)
+    {
         this.x += this.speedX;
         this.y += this.speedY;
 
@@ -40,6 +49,7 @@ export class Ball {
             // Increase speed slightly after each paddle collision
             this.speedX += this.speedX > 0 ? this.speedIncrement : -this.speedIncrement;
             this.speedY += this.speedY > 0 ? this.speedIncrement : -this.speedIncrement;
+            this.lastPaddletouch = "right";
         }
         // Collision with the left paddle (similar to right paddle logic)
         else if (this.x - this.radius <= leftPaddle.x + leftPaddle.width &&
@@ -55,32 +65,43 @@ export class Ball {
 
             this.speedX += this.speedX > 0 ? this.speedIncrement : -this.speedIncrement;
             this.speedY += this.speedY > 0 ? this.speedIncrement : -this.speedIncrement;
+            this.lastPaddletouch = "left";
         }
         // Reverse y direction if the ball hits the top or bottom edges of the canvas
         if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
             this.speedY = -this.speedY;
         }
     }
-    
+
     // Static sleep function to create a delay
-    static sleep(ms) {
+    static sleep(ms)
+    {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     // Method to reset the ball's position with a 1-second delay
     async resetPosition(player) {
-        // Set initial position and temporarily stop the ball
-        this.x = this.beginX;
-        this.y = this.beginY;
+        // Position de départ légèrement aléatoire autour du centre
+        this.x = this.beginX + (Math.random() * 20 - 10); // Décalage entre -10 et 10
+        this.y = this.beginY + (Math.random() * 20 - 10);
+    
+        // Réinitialisation temporaire de la vitesse
         this.speedX = 0;
         this.speedY = 0;
-
-        // Wait for 1 second
-        await Ball.sleep(1000);
-
-        // Set the speed and direction after the pause
-        this.speedX = player === 2 ? this.beginSpeedX : -this.beginSpeedX;
-        this.speedY = Math.random() < 0.5 ? this.beginSpeedY : -this.beginSpeedY;
-    }
     
+        // Pause d'une seconde
+        await Ball.sleep(1000);
+    
+        // Définir la nouvelle direction et vitesse
+        const randomSpeedX = Math.random() * 0.5 + 2; // Vitesse aléatoire entre 2 et 2.5
+        const randomSpeedY = (Math.random() * 4 - 2); // Vitesse aléatoire entre -2 et 2
+    
+        // Direction en X déterminée par le joueur qui a marqué
+        this.speedX = player === 2 ? randomSpeedX : -randomSpeedX;
+    
+        // Direction en Y avec un angle aléatoire
+        this.speedY = randomSpeedY;
+    
+    }
+
 }
